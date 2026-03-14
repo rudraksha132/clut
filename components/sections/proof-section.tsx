@@ -7,6 +7,8 @@ import { prefersReducedMotion } from '@/lib/design-system'
 
 gsap.registerPlugin(ScrollTrigger)
 
+import Image from 'next/image'
+
 interface CaseStudyCard {
   id: string
   platform: string
@@ -18,6 +20,7 @@ interface CaseStudyCard {
   unit2: string
   quote: string
   founder: string
+  image: string
 }
 
 const CASE_STUDIES: CaseStudyCard[] = [
@@ -32,6 +35,7 @@ const CASE_STUDIES: CaseStudyCard[] = [
     unit2: 'days',
     quote: 'They took one call, wrote the script, showed up, filmed. I never touched a caption.',
     founder: 'Arjun Mehta · Founder, GrowthOS',
+    image: '/assets/cases/case-founder.jpg'
   },
   {
     id: '2',
@@ -44,6 +48,7 @@ const CASE_STUDIES: CaseStudyCard[] = [
     unit2: 'inbound',
     quote: 'From concept to published in 5 days. That would normally take 6 weeks with our old team.',
     founder: 'Marcus Rodriguez · CMO, CloudFlow',
+    image: '/assets/cases/case-doordash.jpg'
   },
   {
     id: '3',
@@ -56,6 +61,7 @@ const CASE_STUDIES: CaseStudyCard[] = [
     unit2: 'CTR',
     quote: 'Consistent, high-quality output without the creative bottleneck. Game-changing for solo operators.',
     founder: 'Alexandra Patel · Founder, DataVault',
+    image: '/assets/cases/case-agency.jpg'
   },
 ]
 
@@ -131,7 +137,12 @@ export function ProofSection() {
       ref={sectionRef}
       id="proof"
       className="relative w-full h-screen overflow-hidden flex items-center"
-      style={{ backgroundColor: '#0B132B' }}
+      style={{
+        backgroundImage: 'linear-gradient(color-mix(in srgb, var(--base) 90%, transparent), color-mix(in srgb, var(--base) 90%, transparent)), url(/assets/hero/hero-bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
     >
       <div 
         ref={containerRef}
@@ -139,10 +150,10 @@ export function ProofSection() {
       >
         {/* Left: Sticky Header area within the pinned section */}
         <div ref={headerRef} className="w-full md:w-1/3 z-10">
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.40)', marginBottom: 16 }}>
+          <div className="text-eyebrow" style={{ marginBottom: 16 }}>
             Proven Results
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.05, letterSpacing: '-0.02em', color: '#E8F1F2', fontWeight: 400, margin: 0 }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(48px, 7vw, 88px)', lineHeight: 1.05, letterSpacing: '-0.02em', color: 'var(--ink)', fontWeight: 400, fontStyle: 'italic', margin: 0 }}>
             Real work.<br/>Real numbers.<br/>Real founders.
           </h2>
         </div>
@@ -159,57 +170,71 @@ export function ProofSection() {
               ref={(el) => { cardRefs.current[index] = el }}
               className="absolute top-0 right-0 w-full max-w-md"
               style={{
-                backgroundColor: '#11203A',
-                border: '1px solid rgba(232,241,242,0.08)',
+                backgroundColor: 'var(--surface)',
                 borderRadius: 20,
                 padding: '32px',
-                boxShadow: '0 24px 48px -12px rgba(0,0,0,0.5)',
+                boxShadow: 'inset 0 0 0 1px rgba(234,240,242,0.07), 0 24px 48px -12px rgba(0,0,0,0.5)',
                 willChange: 'transform, opacity',
                 transformOrigin: 'right center',
               }}
             >
-              {/* Thumbnail */}
-              <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: '#1A2E4A', borderRadius: 8, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: 24, opacity: 0.3, color: '#E8F1F2' }}>▶</span>
+              <div style={{
+                position: 'relative',
+                aspectRatio: '16/9',
+                width: '100%',
+                borderRadius: 8,
+                overflow: 'hidden',
+                marginBottom: 24
+              }}>
+                <Image
+                  src={study.image}
+                  alt={`${study.platform} case study`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                />
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(180deg, transparent 25%, rgba(7,14,27,0.88) 100%)',
+                  zIndex: 1
+                }}/>
               </div>
 
               {/* Platform badge */}
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#7FC8D1', marginBottom: 12 }}>
-                {study.platform} · {study.niche}
-              </div>
-              <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: 20, fontWeight: 600, color: '#E8F1F2', margin: '0 0 24px 0', lineHeight: 1.3 }}>
-                {study.resultHeadline}
-              </h3>
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                <div className="text-eyebrow" style={{ color: 'var(--ember)', marginBottom: 12 }}>
+                  {study.platform} · {study.niche}
+                </div>
+                <h3 className="text-headline" style={{ color: 'var(--ink)', margin: '0 0 24px 0', fontSize: 'clamp(20px, 2.5vw, 24px)' }}>
+                  {study.resultHeadline}
+                </h3>
 
-              {/* Metrics */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, paddingBottom: 24, borderBottom: '1px solid rgba(232,241,242,0.08)' }}>
-                {[{ v: study.metric1, u: study.unit1 }, { v: study.metric2, u: study.unit2 }].map((m, i) => (
-                  <div key={i}>
-                    <p style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: 'clamp(32px, 4vw, 48px)',
-                      background: 'linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 60%, #5D727E 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      margin: '0 0 4px 0',
-                      lineHeight: 1,
-                    }}>
-                      {m.v}
-                    </p>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(232,241,242,0.40)', margin: 0, letterSpacing: '0.04em' }}>{m.u}</p>
-                  </div>
-                ))}
-              </div>
+                {/* Metrics */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, paddingBottom: 24, borderBottom: '1px solid var(--rule)' }}>
+                  {[{ v: study.metric1, u: study.unit1 }, { v: study.metric2, u: study.unit2 }].map((m, i) => (
+                    <div key={i}>
+                      <p className="gradient-text" style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontStyle: 'italic',
+                        fontSize: 'clamp(40px, 5vw, 60px)',
+                        margin: '0 0 4px 0',
+                        lineHeight: 1,
+                      }}>
+                        {m.v}
+                      </p>
+                      <p className="text-data text-cyan" style={{ margin: 0, opacity: 0.7 }}>{m.u}</p>
+                    </div>
+                  ))}
+                </div>
 
-              {/* Quote */}
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'rgba(232,241,242,0.60)', lineHeight: 1.6, margin: '0 0 16px 0', fontStyle: 'italic' }}>
-                "{study.quote}"
-              </p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(232,241,242,0.40)', margin: 0, letterSpacing: '0.02em' }}>
-                — {study.founder}
-              </p>
+                {/* Quote */}
+                <p className="text-body" style={{ color: 'var(--mist)', margin: '0 0 16px 0', fontStyle: 'italic' }}>
+                  "{study.quote}"
+                </p>
+                <p className="text-data text-cyan" style={{ margin: 0, opacity: 0.55 }}>
+                  — {study.founder}
+                </p>
+              </div>
             </div>
           ))}
         </div>

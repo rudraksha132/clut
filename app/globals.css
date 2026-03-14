@@ -11,23 +11,77 @@
 /* CLUT Media Design System — Deep Navy Dark Palette */
 
 :root {
-  /* Deep Forge Dark Palette */
-  --base: #0B132B;          /* deep navy — primary bg */
-  --surface: #11203A;       /* slightly lighter navy — cards */
-  --surface-2: #1A2E4A;     /* hover state surfaces */
-  --ink: #E8F1F2;           /* crisp off-white — primary text */
-  --mist: rgba(232, 241, 242, 0.45);
-  --rule: rgba(232, 241, 242, 0.08);
+  /* ── Backgrounds ── */
+  /* Cinema black, blue-shifted. Not warm charcoal (old/earthy).
+     The blue undertone signals: digital night, recording studio,
+     post-production suite. Focused attention without depression. */
+  --base: #070E1B;
+  /* Card/panel lift. Matte, expensive. Just enough separation
+     from --base to show depth without leaking into medium blue. */
+  --surface: #0C1C30;
+  /* Hover / elevated states. "Lit from within." Interactive 
+     feedback without brightness shock. */
+  --surface-2: #132540;
 
-  /* Accents */
-  --slate: #5D727E;         /* muted teal-grey */
-  --cyan: #5D727E;          /* alias for components that use --cyan */
-  --cyan-bright: #7FC8D1;   /* brighter tint for highlights */
-  --blue: #3B6FD4;
-  --ember: #C87C4A;
+  /* ── Typography ── */
+  /* Slightly cool off-white. Pure #FFFFFF on dark causes halation —
+     the glow that makes text feel harsh and exhausting.
+     Cool-tinted off-white reads as precise, editorial, trusted.
+     Signals: serious publication, not a landing page template. */
+  --ink: #EAF0F2;
+  /* Secondary text. 44% opacity preserves the cool undertone
+     while stepping back in hierarchy. Not a new color — just
+     the same ink, breathing. */
+  --mist: rgba(234, 240, 242, 0.44);
+  /* Hairline dividers. Barely visible — felt not seen. */
+  --rule: rgba(234, 240, 242, 0.07);
 
-  /* Gradient Text */
-  --gradient-evidence: linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 55%, #5D727E 100%);
+  /* ── Slate (UI chrome, tertiary text) ── */
+  /* Desaturated blue-gray. Labels, metadata, secondary UI.
+     Recedes without disappearing. Functional, understatedly 
+     professional — the engineer who doesn't need to be noticed. */
+  --slate: #607A88;
+  --cyan: #607A88;
+
+  /* ── Primary accent: Ember ── */
+  /* "Gold medal in dim light."
+     The achievement amber. Precisely NOT:
+     - Orange (#FF6600) = discount retail, pizza, urgency
+     - Yellow (#FFD700) = caution, cheap, highlighter
+     - Brown = earth, old, web 2008
+     #D08030 sits in the trophy zone: warm, prestigious, earned.
+     This is what a viral notification looks like in a dark room.
+     It triggers reward circuits. White text on #D08030 passes 4.5:1. */
+  --ember: #D08030;
+
+  /* ── Secondary accent: Cyan-bright ── */
+  /* Screen glow in a dark room.
+     Analytics dashboards, terminal output, the monitor light
+     at 2am when the edit is nearly done.
+     More saturated than the previous #89D4DE (which read as 
+     "spa/healthcare"). #3FC0CC reads as: data, proof, precision.
+     Used for: metric units, data labels, secondary highlights. */
+  --cyan-bright: #3FC0CC;
+
+  /* ── Derived tokens ── */
+  /* Halo/aura on interactive ember elements. Thin enough to not 
+     compete with content, strong enough to signal interactivity. */
+  --amber-glow: rgba(208, 128, 48, 0.16);
+  /* Frosted glass panels: nav pill, modals, attribution chips.
+     Slightly more opaque than before — the blur needs a base
+     that doesn't let the image through too aggressively. */
+  --surface-glass: rgba(12, 28, 48, 0.76);
+  /* Top of image is almost raw (10%) — lets the photography 
+     breathe and establish place. Mid-scroll the text needs to
+     be readable (60%). Bottom is nearly solid — the stat 
+     headline floats on a clean dark field. */
+  --hero-overlay: linear-gradient(180deg, rgba(7, 14, 27, 0.10) 0%, rgba(7, 14, 27, 0.60) 55%, rgba(7, 14, 27, 0.97) 100%);
+
+  /* ── Gradient text ── */
+  /* Used on hero stat numbers and the "20 minutes." headline.
+     Reads: precise, credible, earned — not rainbow, not generic
+     white-to-blue. The teal midpoint is the psychological pivot. */
+  --gradient-evidence: linear-gradient(135deg, #EAF0F2 0%, #3FC0CC 48%, #607A88 100%);
 
   /* Semantic */
   --background: var(--base);
@@ -40,12 +94,17 @@
   /* Radius */
   --radius: 16px;
 
-  /* Typography Scale */
-  --text-hero-stat: clamp(60px, 11vw, 140px);
+  /* ── Typography scale adjustments ── */
+  --text-hero-stat: clamp(96px, 15vw, 196px);
   --text-hero-stat-lh: 0.9;
-  --text-eyebrow: 10px;
-  --text-hero-label: clamp(16px, 2vw, 22px);
-  --text-headline: clamp(28px, 4vw, 56px);
+  /* Eyebrow labels: color → var(--ember) at 65% opacity.
+     This single change unifies the accent language across every
+     section. The amber eyebrow above a white headline creates
+     exactly the "achievement leading to credibility" read
+     described in the brief. */
+  --text-eyebrow: 11px;
+  --text-hero-label: clamp(19px, 2.8vw, 27px);
+  --text-headline: clamp(32px, 5vw, 64px);
   --text-body: clamp(14px, 1vw, 16px);
   --text-data: 11px;
 
@@ -179,6 +238,13 @@
   .font-700 { font-weight: 700; }
 
   /* Typography utilities */
+  /* Hierarchy rules:
+     • Hero stat numbers → font-serif italic + gradient-evidence
+     • Section headlines → font-serif italic, var(--ink)
+     • Eyebrow labels → font-mono 11px uppercase, var(--ember) 65% opacity
+     • Body copy → Inter 400 16px, var(--ink) 88% opacity
+     • Data / metrics / mono labels → JetBrains Mono, var(--cyan-bright)
+     • Secondary body → var(--mist) */
   .text-hero-stat {
     font-size: var(--text-hero-stat);
     line-height: var(--text-hero-stat-lh);
@@ -199,13 +265,15 @@
     line-height: 1.68;
   }
   .text-eyebrow {
+    font-family: var(--font-mono);
     font-size: var(--text-eyebrow);
-    letter-spacing: 0.22em;
+    color: color-mix(in srgb, var(--ember) 65%, transparent);
+    letter-spacing: 0.20em;
     text-transform: uppercase;
   }
   .text-data {
     font-size: var(--text-data);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   /* Font family utilities */

@@ -3,11 +3,11 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CLUT Media',
-  description: 'Discover how CLUT Media uses AI to transform creative strategy. From discovery to deployment in 72 hours.',
+  title: 'Clut Media',
+  description: 'Discover how Clut Media uses AI to transform creative strategy. From discovery to deployment in 72 hours.',
   openGraph: {
-    title: 'CLUT Media',
-    description: 'Discover how CLUT Media uses AI to transform creative strategy. From discovery to deployment in 72 hours.',
+    title: 'Clut Media',
+    description: 'Discover how Clut Media uses AI to transform creative strategy. From discovery to deployment in 72 hours.',
     type: 'website',
   },
 }
@@ -28,9 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/logo.jpg" sizes="any" />
+        <link rel="icon" href="/logo.jpg" type="image/jpg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

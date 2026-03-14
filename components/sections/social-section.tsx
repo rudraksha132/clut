@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/lib/design-system'
+import { LogoTicker } from '@/components/sections/logo-ticker'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -52,29 +53,29 @@ export function SocialSection() {
     })
 
     // Setup: stack all quotes on top of each other, hide all but first
-    gsap.set(quoteRefs.current, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', opacity: 0, y: 40 })
+    gsap.set(quoteRefs.current, { position: 'absolute', top: '50%', left: '50%', xPercent: -50, yPercent: -50, width: '100%', opacity: 0, scale: 0.94 })
     
     // Animate them fading in and out on scroll
     quoteRefs.current.forEach((quote, index) => {
       if (!quote) return
       
-      // Fade in and slide up
+      // Materialize
       tl.to(quote, {
         opacity: 1,
-        y: 0,
-        duration: 1,
+        scale: 1,
+        duration: 0.38,
         ease: 'power2.out',
       })
       
       // Hold it there
       tl.to({}, { duration: 1 })
       
-      // Fade out and slide up (unless it's the last one)
+      // Fade out
       if (index < TESTIMONIALS.length - 1) {
         tl.to(quote, {
           opacity: 0,
-          y: -40,
-          duration: 1,
+          scale: 0.94,
+          duration: 0.38,
           ease: 'power2.in',
         })
       }
@@ -88,10 +89,20 @@ export function SocialSection() {
       ref={sectionRef}
       id="social"
       className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center"
-      style={{ backgroundColor: '#0B132B' }}
+      style={{
+        backgroundImage: 'linear-gradient(color-mix(in srgb, var(--base) 95%, transparent), color-mix(in srgb, var(--base) 95%, transparent)), url(/assets/hero/close-bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
     >
-      <div style={{ position: 'absolute', top: 80, width: '100%', textAlign: 'center', zIndex: 10 }}>
-        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.30)' }}>
+      <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+         <div style={{ borderTop: '1px solid var(--rule)', borderBottom: '1px solid var(--rule)' }}>
+            <LogoTicker />
+         </div>
+      </div>
+      <div style={{ position: 'absolute', top: 120, width: '100%', textAlign: 'center', zIndex: 10 }}>
+        <div className="text-eyebrow" style={{ color: 'var(--ember)', opacity: 0.65 }}>
           Testimonials
         </div>
       </div>
@@ -110,27 +121,28 @@ export function SocialSection() {
             <h3 style={{
               fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
-              fontSize: 'clamp(32px, 5vw, 64px)',
+              fontSize: 'clamp(26px, 4.2vw, 52px)',
               lineHeight: 1.2,
               letterSpacing: '-0.02em',
-              color: '#E8F1F2',
+              color: 'var(--ink)',
               margin: '0 0 48px 0',
             }}>
               "{t.quote}"
             </h3>
 
             {/* Attribution */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 24, padding: '12px 24px', backgroundColor: '#11203A', borderRadius: 100, border: '1px solid rgba(232,241,242,0.06)' }}>
-              <div style={{ textAlign: 'left' }}>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 600, color: '#E8F1F2', margin: '0 0 2px 0' }}>{t.name}</p>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(232,241,242,0.40)', margin: 0 }}>{t.role}</p>
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-6 py-4 sm:py-3 rounded-2xl sm:rounded-[100px]" style={{ background: 'var(--surface-glass)', border: '1px solid var(--rule)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'inline-flex' }}>
+              <div className="text-center sm:text-left">
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 600, color: 'var(--ink)', margin: '0 0 2px 0' }}>{t.name}</p>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--mist)', margin: 0 }}>{t.role}</p>
               </div>
               
-              <div style={{ width: 1, height: 32, backgroundColor: 'rgba(232,241,242,0.08)' }} />
+              <div className="hidden sm:block" style={{ width: 1, height: 32, backgroundColor: 'var(--rule)' }} />
+              <div className="sm:hidden" style={{ width: 32, height: 1, backgroundColor: 'var(--rule)' }} />
               
-              <div style={{ textAlign: 'right' }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(127,200,209,0.5)', margin: '0 0 4px 0' }}>Result</p>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 600, color: '#7FC8D1', letterSpacing: '-0.01em', margin: 0 }}>
+              <div className="text-center sm:text-right">
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'color-mix(in srgb, var(--cyan-bright) 55%, transparent)', margin: '0 0 4px 0' }}>Result</p>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 600, color: 'var(--cyan-bright)', letterSpacing: '-0.01em', margin: 0 }}>
                   {t.result}
                 </p>
               </div>

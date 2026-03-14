@@ -41,29 +41,30 @@ export function NavPill() {
       }}
     >
       <div
+        className="w-auto min-w-max md:min-w-[520px] max-w-[95vw]"
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 4,
+          justifyContent: 'space-between',
           padding: '10px 18px',
           borderRadius: 100,
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          backgroundColor: 'rgba(11,19,43,0.85)', // Deep Forge frosted
-          border: '1px solid rgba(232,241,242,0.08)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          backdropFilter: 'blur(20px) saturate(1.6)',
+          WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
+          backgroundColor: 'var(--surface-glass)',
+          boxShadow: 'inset 0 0 0 1px rgba(234,240,242,0.09)',
         }}
       >
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
-          <img src="/logo.jpg" alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: '#E8F1F2', letterSpacing: '-0.01em' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.01em' }}>
             CLUT
           </span>
-        </div>
+          </div>
 
-        {/* Divider */}
-        <div style={{ width: 1, height: 18, backgroundColor: 'rgba(232,241,242,0.08)' }} />
+          {/* Divider */}
+          <div style={{ width: 1, height: 18, backgroundColor: 'var(--rule)' }} />
+        </div>
 
         {/* Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 8 }}>
@@ -74,8 +75,8 @@ export function NavPill() {
                 href={link.href}
                 style={{
                   padding: '6px 16px',
-                  backgroundColor: '#E8F1F2',
-                  color: '#0B132B',
+                  backgroundColor: 'var(--ember)',
+                  color: 'white',
                   borderRadius: 100,
                   fontFamily: 'var(--font-sans)',
                   fontSize: 12,
@@ -83,18 +84,18 @@ export function NavPill() {
                   textDecoration: 'none',
                   letterSpacing: '0.02em',
                   marginLeft: 6,
-                  transition: 'opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
+                  transition: 'opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease',
                   display: 'inline-block',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement
-                  el.style.opacity = '0.9'
+                  el.style.backgroundColor = '#B8701A'
                   el.style.transform = 'scale(1.02)'
-                  el.style.boxShadow = '0 0 12px rgba(232,241,242,0.3)'
+                  el.style.boxShadow = '0 0 12px var(--amber-glow)'
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement
-                  el.style.opacity = '1'
+                  el.style.backgroundColor = 'var(--ember)'
                   el.style.transform = 'scale(1)'
                   el.style.boxShadow = 'none'
                 }}
@@ -103,6 +104,7 @@ export function NavPill() {
               </a>
             ) : (
               <a
+                className="hidden md:inline-block"
                 key={link.href}
                 href={link.href}
                 style={{
@@ -110,19 +112,19 @@ export function NavPill() {
                   fontFamily: 'var(--font-sans)',
                   fontSize: 13,
                   fontWeight: 500,
-                  color: 'rgba(232,241,242,0.45)',
+                  color: 'var(--mist)',
                   textDecoration: 'none',
                   borderRadius: 100,
                   transition: 'color 0.2s ease, background 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = 'rgba(232,241,242,0.90)'
-                  el.style.backgroundColor = 'rgba(232,241,242,0.06)'
+                  el.style.color = 'var(--ink)'
+                  el.style.backgroundColor = 'rgba(208,128,48,0.08)'
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = 'rgba(232,241,242,0.45)'
+                  el.style.color = 'var(--mist)'
                   el.style.backgroundColor = 'transparent'
                 }}
               >

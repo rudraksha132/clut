@@ -42,27 +42,27 @@ export function HookSection() {
 
     if (statRef.current) {
       gsap.set(statRef.current, { opacity: 0, y: 30, scale: 0.95 })
-      tl.to(statRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out' }, 0.35)
+      tl.to(statRef.current, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'expo.out' }, 0.35)
     }
 
     if (contextRef.current) {
-      gsap.set(contextRef.current, { opacity: 0, y: 10 })
-      tl.to(contextRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.6)
+      gsap.set(contextRef.current, { opacity: 0, y: 14, x: -10 })
+      tl.to(contextRef.current, { opacity: 1, y: 0, x: 0, duration: 0.65, ease: 'power3.out' }, 0.6)
     }
 
     if (dataLineRef.current) {
       gsap.set(dataLineRef.current, { opacity: 0 })
-      tl.to(dataLineRef.current, { opacity: 1, duration: 0.35, ease: 'sine.out' }, 0.78)
+      tl.to(dataLineRef.current, { opacity: 1, duration: 0.4, ease: 'sine.out' }, 0.78)
     }
 
     if (ctasRef.current) {
       gsap.set(ctasRef.current, { opacity: 0, y: 12 })
-      tl.to(ctasRef.current, { opacity: 1, y: 0, duration: 0.45, ease: 'back.out(1.7)' }, 0.88)
+      tl.to(ctasRef.current, { opacity: 1, y: 0, duration: 0.45, ease: 'expo.out' }, 0.88)
     }
 
     if (tickerRef.current) {
       gsap.set(tickerRef.current, { opacity: 0, y: 40 })
-      tl.to(tickerRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, 1.0)
+      tl.to(tickerRef.current, { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out' }, 1.0)
     }
   }, [])
 
@@ -76,12 +76,16 @@ export function HookSection() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '120px 24px 80px',
-        backgroundColor: 'transparent', // Transparent per instruction
+        backgroundImage: 'url(/assets/hero/hero-bg.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        backgroundAttachment: 'fixed',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1152, zIndex: 10, position: 'relative' }}>
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: 'var(--hero-overlay)', pointerEvents: 'none' }} />
+      <div style={{ width: '100%', maxWidth: 1152, zIndex: 1, position: 'relative' }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-start w-full">
 
           {/* Left Column */}
@@ -96,7 +100,7 @@ export function HookSection() {
                 style={{ width: 24, height: 24, objectFit: 'contain' }}
               />
               <div ref={eyebrowRef}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.50)' }}>
+                <span className="text-eyebrow">
                   CLUT Media · Results
                 </span>
               </div>
@@ -105,19 +109,12 @@ export function HookSection() {
             {/* Hero Stat */}
             <h1
               ref={statRef}
+              className="text-hero-stat gradient-text"
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
-                fontSize: 'clamp(80px, 13vw, 168px)',
-                lineHeight: 0.84,
-                letterSpacing: '-0.06em',
                 fontWeight: 400,
                 margin: 0,
-                background: 'linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 55%, #5D727E 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                textShadow: '0 8px 32px rgba(11,19,43,0.4)', // Added faint shadow so it's readable if hero image is light
               }}
             >
               3.2M
@@ -126,30 +123,48 @@ export function HookSection() {
             {/* Context */}
             <p
               ref={contextRef}
+              className="text-hero-label text-ink"
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(18px, 2.5vw, 24px)',
-                lineHeight: 1.35,
-                letterSpacing: '-0.02em',
-                color: 'rgba(232,241,242,0.85)',
-                textShadow: '0 2px 8px rgba(11,19,43,0.5)', // readability on image map
                 margin: 0,
                 maxWidth: 480,
+                color: 'var(--ink)'
               }}
             >
               views in 90 days for a founder with 800 followers.
             </p>
 
+            {/* Glassmorphism Stat Chips */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
+              {[
+                { label: '90 DAYS', value: '3.2M' },
+                { label: '14K FOLLOWERS', value: '+13.2K' }
+              ].map((chip, i) => (
+                <div key={i} style={{
+                  background: 'var(--surface-glass)',
+                  border: '1px solid var(--rule)',
+                  borderRadius: 8,
+                  padding: '8px 20px',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--mist)' }}>
+                    {chip.label}
+                  </span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--ink)' }}>
+                    {chip.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             {/* Data line */}
             <p
               ref={dataLineRef}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12,
-                color: 'rgba(232,241,242,0.60)', // Made slightly more visible
-                letterSpacing: '0.06em',
-                margin: 0,
-              }}
+              className="text-data text-cyan"
+              style={{ margin: 0 }}
             >
               Filmed in 1 day. Edited in 4 rounds. Posted. Done.
             </p>
@@ -159,6 +174,7 @@ export function HookSection() {
               <Button
                 variant="primary"
                 size="lg"
+                style={{ backgroundColor: 'var(--ember)', color: 'white', fontWeight: 700 }}
                 onClick={() => document.getElementById('close')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Book a Call
@@ -166,6 +182,7 @@ export function HookSection() {
               <Button
                 variant="secondary"
                 size="lg"
+                style={{ borderColor: 'rgba(208,128,48,0.45)', color: 'var(--ink)' }}
                 onClick={() => document.getElementById('proof')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 See the work
@@ -176,7 +193,7 @@ export function HookSection() {
           {/* Right Column — Ticker (desktop) */}
           <div
             ref={tickerRef}
-            style={{ height: 500 }}
+            style={{ height: 560 }}
             className="hidden lg:block"
           >
             <ContentTicker />

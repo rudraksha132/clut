@@ -65,18 +65,21 @@ export function ContentTicker() {
 
   return (
     <div className="relative h-full overflow-hidden rounded-2xl" style={{
-      border: '1px solid rgba(232,241,242,0.08)',
-      backgroundColor: '#11203A', // Deep Forge surface
-      boxShadow: '0 24px 48px rgba(0,0,0,0.5)', // heavy shadow since hero is transparent
+      borderTop: '2px solid var(--ember)',
+      borderRight: '1px solid var(--rule)',
+      borderBottom: '1px solid var(--rule)',
+      borderLeft: '1px solid var(--rule)',
+      backgroundColor: 'var(--surface)',
+      boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
     }}>
       {/* Header */}
       <div className="px-5 pt-5 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(232,241,242,0.05)' }}>
         <div
           className="w-2 h-2 rounded-full"
           style={{
-            backgroundColor: '#4ADE80',
+            backgroundColor: 'var(--ember)',
             animation: 'pulse-dot 2s ease-in-out infinite',
-            boxShadow: '0 0 8px rgba(74,222,128,0.5)',
+            boxShadow: '0 0 8px var(--amber-glow)',
           }}
         />
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(232,241,242,0.40)' }}>
@@ -108,15 +111,15 @@ export function ContentTicker() {
               }}
             >
               <div className="flex items-center gap-1 mb-1.5">
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#7FC8D1', letterSpacing: '0.05em', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>{item.platform}</span>
+                <span className="text-data text-cyan font-600">{item.platform}</span>
               </div>
-              <p style={{ fontSize: 14, fontFamily: 'var(--font-sans)', color: 'rgba(232,241,242,0.85)', lineHeight: 1.35, marginBottom: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontSize: 14, fontFamily: 'var(--font-sans)', color: 'color-mix(in srgb, var(--ink) 85%, transparent)', lineHeight: 1.35, marginBottom: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {item.contentTitle}
               </p>
               <div className="flex items-baseline gap-1.5">
-                <span style={{ fontSize: 16, fontWeight: 600, color: '#E8F1F2', fontFamily: 'var(--font-sans)' }}>{item.metric}</span>
-                <span style={{ fontSize: 12, color: 'rgba(232,241,242,0.40)', fontFamily: 'var(--font-sans)' }}>{item.metricLabel}</span>
-                <span style={{ marginLeft: 'auto', fontSize: 11, fontFamily: 'var(--font-mono)', color: 'rgba(232,241,242,0.30)', letterSpacing: '0.04em' }}>{item.time}</span>
+                <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink)', fontFamily: 'var(--font-sans)' }}>{item.metric}</span>
+                <span style={{ fontSize: 12, color: 'var(--mist)', fontFamily: 'var(--font-sans)' }}>{item.metricLabel}</span>
+                <span style={{ marginLeft: 'auto', fontSize: 11, fontFamily: 'var(--font-mono)', color: 'color-mix(in srgb, var(--mist) 60%, transparent)', letterSpacing: '0.04em' }}>{item.time}</span>
               </div>
             </div>
           ))}
