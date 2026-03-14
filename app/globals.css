@@ -11,10 +11,10 @@
 /* CLUT Media Design System — Deep Navy Dark Palette */
 
 :root {
-  /* Dark Palette */
-  --base: #0F1C2D;          /* deep navy — primary bg */
-  --surface: #162336;       /* slightly lighter navy — cards */
-  --surface-2: #1D2E42;     /* hover state surfaces */
+  /* Deep Forge Dark Palette */
+  --base: #0B132B;          /* deep navy — primary bg */
+  --surface: #11203A;       /* slightly lighter navy — cards */
+  --surface-2: #1A2E4A;     /* hover state surfaces */
   --ink: #E8F1F2;           /* crisp off-white — primary text */
   --mist: rgba(232, 241, 242, 0.45);
   --rule: rgba(232, 241, 242, 0.08);
