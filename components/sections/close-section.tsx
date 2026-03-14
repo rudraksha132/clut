@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function CloseSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const eyebrowRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLImageElement>(null)
   const headlineRef = useRef<HTMLDivElement>(null)
   const subRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -19,7 +19,7 @@ export function CloseSection() {
   useEffect(() => {
     if (prefersReducedMotion() || !sectionRef.current) return
 
-    const elements = [eyebrowRef.current, headlineRef.current, subRef.current, ctaRef.current, trustRef.current].filter(Boolean)
+    const elements = [logoRef.current, headlineRef.current, subRef.current, ctaRef.current, trustRef.current].filter(Boolean)
 
     gsap.from(elements, {
       opacity: 0,
@@ -50,15 +50,26 @@ export function CloseSection() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '80px 24px',
-        backgroundColor: '#0F1C2D',
+        backgroundColor: '#0B132B',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 28 }}>
-        {/* Eyebrow */}
-        <div ref={eyebrowRef}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.35)' }}>
-            Next Step
-          </span>
+      <div style={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 32 }}>
+        
+        {/* Logo with Progressive Radial Blur Mask */}
+        <div ref={logoRef} style={{ position: 'relative', width: 80, height: 80, marginBottom: -10 }}>
+          <img 
+            src="/logo.png" 
+            alt="CLUT Media"
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'contain',
+              /* This creates the progressive blur effect requested by user */
+              maskImage: 'radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%)',
+              WebkitMaskImage: 'radial-gradient(circle, black 30%, rgba(0,0,0,0) 70%)',
+              opacity: 0.9
+            }}
+          />
         </div>
 
         {/* Headline */}
@@ -66,7 +77,7 @@ export function CloseSection() {
           <h2 style={{
             fontFamily: 'var(--font-serif)',
             fontStyle: 'italic',
-            fontSize: 'clamp(56px, 8vw, 96px)',
+            fontSize: 'clamp(56px, 8vw, 110px)',
             lineHeight: 0.9,
             letterSpacing: '-0.03em',
             color: '#E8F1F2',
@@ -97,21 +108,18 @@ export function CloseSection() {
 
         {/* Trust */}
         <div ref={trustRef}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'rgba(232,241,242,0.28)', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(232,241,242,0.35)', margin: 0, letterSpacing: '0.01em' }}>
             No commitment. No pitch deck. No funnels.
           </p>
         </div>
       </div>
 
       {/* Footer */}
-      <footer style={{ marginTop: 80, paddingTop: 24, borderTop: '1px solid rgba(232,241,242,0.06)', width: '100%', maxWidth: 960 }}>
+      <footer style={{ marginTop: 100, paddingTop: 32, borderTop: '1px solid rgba(232,241,242,0.06)', width: '100%', maxWidth: 960 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C12 2 6 9 6 14C6 17.3137 8.68629 20 12 20C15.3137 20 18 17.3137 18 14C18 9 12 2 12 2Z" fill="#7FC8D1" opacity="0.9"/>
-              <path d="M12 8C12 8 9 12 9 15C9 16.6569 10.3431 18 12 18C13.6569 18 15 16.6569 15 15C15 12 12 8 12 8Z" fill="#0F1C2D" opacity="0.6"/>
-            </svg>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500, color: '#E8F1F2' }}>clut.media</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src="/logo.png" alt="" style={{ width: 16, height: 16, opacity: 0.6 }} />
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500, color: 'rgba(232,241,242,0.8)' }}>clut.media</span>
           </div>
           <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'rgba(232,241,242,0.28)' }}>© 2025</span>

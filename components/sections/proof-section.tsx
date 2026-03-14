@@ -61,26 +61,67 @@ const CASE_STUDIES: CaseStudyCard[] = [
 
 export function ProofSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const cardsWrapperRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    if (prefersReducedMotion() || !sectionRef.current) return
+    if (prefersReducedMotion() || !sectionRef.current || !cardsWrapperRef.current) return
 
-    cardRefs.current.forEach((card, index) => {
-      if (!card) return
-      gsap.from(card, {
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-        delay: index * 0.1,
-      })
+    // Create a pinned timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=200%', // Scroll for 2 screen heights
+        pin: true,
+        scrub: 1, // Smooth scrubbing
+        anticipatePin: 1,
+      },
     })
+
+    // Cards start off-screen right
+    gsap.set(cardRefs.current, { 
+      x: '100vw',
+      opacity: 0.2,
+      scale: 0.9,
+    })
+
+    // Header fades out slightly as we scroll
+    tl.to(headerRef.current, { opacity: 0.5, y: -20, duration: 1 }, 0)
+
+    // Bring cards in one by one horizontally
+    cardRefs.current.forEach((card, i) => {
+      // Calculate position so they stack nicely
+      const xOffset = i * 20; // Slight offset so they don't perfectly overlap until end? Or side-by-side depending on layout.
+      
+      // Let's make them slide in and stack
+      // Move card to center
+      tl.to(card, {
+        x: xOffset,
+        opacity: 1,
+        scale: 1,
+        duration: 1.5,
+        ease: 'power2.out',
+      }, i * 0.8) // staggered start times
+      
+      // Push previous cards slightly back
+      if (i > 0) {
+        for (let j = 0; j < i; j++) {
+          tl.to(cardRefs.current[j], {
+            scale: 1 - ((i - j) * 0.05),
+            x: -((i - j) * 40),
+            opacity: Math.max(0.4, 1 - ((i - j) * 0.3)),
+            duration: 1.5,
+            ease: 'power2.out',
+          }, i * 0.8)
+        }
+      }
+    })
+
+    // Give a little pause at the end of the timeline
+    tl.to({}, { duration: 0.5 })
 
     return () => { ScrollTrigger.getAll().forEach((t) => t.kill()) }
   }, [])
@@ -89,67 +130,65 @@ export function ProofSection() {
     <section
       ref={sectionRef}
       id="proof"
-      style={{ padding: '80px 24px', backgroundColor: '#0F1C2D' }}
+      className="relative w-full h-screen overflow-hidden flex items-center"
+      style={{ backgroundColor: '#0B132B' }}
     >
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ marginBottom: 48 }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.30)', marginBottom: 16 }}>
+      <div 
+        ref={containerRef}
+        className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-12"
+      >
+        {/* Left: Sticky Header area within the pinned section */}
+        <div ref={headerRef} className="w-full md:w-1/3 z-10">
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.40)', marginBottom: 16 }}>
             Proven Results
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.1, letterSpacing: '-0.02em', color: '#E8F1F2', fontWeight: 400, margin: 0 }}>
-            Real work. Real numbers. Real founders.
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.05, letterSpacing: '-0.02em', color: '#E8F1F2', fontWeight: 400, margin: 0 }}>
+            Real work.<br/>Real numbers.<br/>Real founders.
           </h2>
         </div>
 
-        {/* Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+        {/* Right: Card Stacking Area */}
+        <div 
+          ref={cardsWrapperRef} 
+          className="w-full md:w-1/2 relative h-[500px]"
+          style={{ perspective: 1000 }}
+        >
           {CASE_STUDIES.map((study, index) => (
             <div
               key={study.id}
               ref={(el) => { cardRefs.current[index] = el }}
+              className="absolute top-0 right-0 w-full max-w-md"
               style={{
-                backgroundColor: '#162336',
-                border: '1px solid rgba(232,241,242,0.06)',
-                borderRadius: 16,
-                padding: 28,
-                transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                cursor: 'default',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.transform = 'translateY(-6px)'
-                el.style.borderColor = 'rgba(232,241,242,0.12)'
-                el.style.boxShadow = '0 12px 40px rgba(0,0,0,0.4)'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.transform = 'translateY(0)'
-                el.style.borderColor = 'rgba(232,241,242,0.06)'
-                el.style.boxShadow = 'none'
+                backgroundColor: '#11203A',
+                border: '1px solid rgba(232,241,242,0.08)',
+                borderRadius: 20,
+                padding: '32px',
+                boxShadow: '0 24px 48px -12px rgba(0,0,0,0.5)',
+                willChange: 'transform, opacity',
+                transformOrigin: 'right center',
               }}
             >
               {/* Thumbnail */}
-              <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: 'rgba(232,241,242,0.04)', borderRadius: 8, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: 28, opacity: 0.2, color: '#E8F1F2' }}>▶</span>
+              <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: '#1A2E4A', borderRadius: 8, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: 24, opacity: 0.3, color: '#E8F1F2' }}>▶</span>
               </div>
 
               {/* Platform badge */}
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: '#7FC8D1', marginBottom: 8 }}>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#7FC8D1', marginBottom: 12 }}>
                 {study.platform} · {study.niche}
               </div>
-              <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 600, color: '#E8F1F2', margin: '0 0 20px 0', lineHeight: 1.3 }}>
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: 20, fontWeight: 600, color: '#E8F1F2', margin: '0 0 24px 0', lineHeight: 1.3 }}>
                 {study.resultHeadline}
               </h3>
 
               {/* Metrics */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20, paddingBottom: 20, borderBottom: '1px solid rgba(232,241,242,0.06)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24, paddingBottom: 24, borderBottom: '1px solid rgba(232,241,242,0.08)' }}>
                 {[{ v: study.metric1, u: study.unit1 }, { v: study.metric2, u: study.unit2 }].map((m, i) => (
                   <div key={i}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontStyle: 'italic',
-                      fontSize: 'clamp(28px, 4vw, 40px)',
+                      fontSize: 'clamp(32px, 4vw, 48px)',
                       background: 'linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 60%, #5D727E 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -159,16 +198,16 @@ export function ProofSection() {
                     }}>
                       {m.v}
                     </p>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(232,241,242,0.30)', margin: 0, letterSpacing: '0.04em' }}>{m.u}</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(232,241,242,0.40)', margin: 0, letterSpacing: '0.04em' }}>{m.u}</p>
                   </div>
                 ))}
               </div>
 
               {/* Quote */}
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(232,241,242,0.45)', lineHeight: 1.6, margin: '0 0 14px 0', fontStyle: 'italic' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'rgba(232,241,242,0.60)', lineHeight: 1.6, margin: '0 0 16px 0', fontStyle: 'italic' }}>
                 "{study.quote}"
               </p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(232,241,242,0.28)', margin: 0, letterSpacing: '0.02em' }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(232,241,242,0.40)', margin: 0, letterSpacing: '0.02em' }}>
                 — {study.founder}
               </p>
             </div>

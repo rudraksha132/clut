@@ -65,20 +65,21 @@ export function ContentTicker() {
 
   return (
     <div className="relative h-full overflow-hidden rounded-2xl" style={{
-      border: '1px solid rgba(232,241,242,0.06)',
-      backgroundColor: '#162336',
+      border: '1px solid rgba(232,241,242,0.08)',
+      backgroundColor: '#11203A', // Deep Forge surface
+      boxShadow: '0 24px 48px rgba(0,0,0,0.5)', // heavy shadow since hero is transparent
     }}>
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(232,241,242,0.04)' }}>
+      <div className="px-5 pt-5 pb-4 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(232,241,242,0.05)' }}>
         <div
           className="w-2 h-2 rounded-full"
           style={{
             backgroundColor: '#4ADE80',
             animation: 'pulse-dot 2s ease-in-out infinite',
-            boxShadow: '0 0 6px #4ADE80',
+            boxShadow: '0 0 8px rgba(74,222,128,0.5)',
           }}
         />
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(232,241,242,0.30)' }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(232,241,242,0.40)' }}>
           Recent results — live
         </span>
       </div>
@@ -88,7 +89,7 @@ export function ContentTicker() {
         ref={containerRef}
         className="relative overflow-hidden"
         style={{
-          height: 'calc(100% - 44px)',
+          height: 'calc(100% - 53px)',
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
         }}
@@ -97,25 +98,25 @@ export function ContentTicker() {
           {ALL_ITEMS.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="px-4 py-3 transition-colors duration-200"
+              className="px-5 py-4 transition-colors duration-200"
               style={{ borderBottom: '1px solid rgba(232,241,242,0.04)' }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLDivElement).style.backgroundColor = 'rgba(232,241,242,0.04)'
+                ;(e.currentTarget as HTMLDivElement).style.backgroundColor = 'rgba(232,241,242,0.06)'
               }}
               onMouseLeave={(e) => {
                 ;(e.currentTarget as HTMLDivElement).style.backgroundColor = 'transparent'
               }}
             >
-              <div className="flex items-center gap-1 mb-1">
-                <span style={{ fontSize: 11, fontWeight: 500, color: 'rgba(232,241,242,0.35)', fontFamily: 'var(--font-sans)' }}>{item.platform}</span>
+              <div className="flex items-center gap-1 mb-1.5">
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#7FC8D1', letterSpacing: '0.05em', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>{item.platform}</span>
               </div>
-              <p style={{ fontSize: 13, fontFamily: 'var(--font-sans)', color: 'rgba(232,241,242,0.75)', lineHeight: 1.35, marginBottom: 5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontSize: 14, fontFamily: 'var(--font-sans)', color: 'rgba(232,241,242,0.85)', lineHeight: 1.35, marginBottom: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {item.contentTitle}
               </p>
-              <div className="flex items-baseline gap-1">
-                <span style={{ fontSize: 15, fontWeight: 600, color: '#E8F1F2', fontFamily: 'var(--font-sans)' }}>{item.metric}</span>
-                <span style={{ fontSize: 11, color: 'rgba(232,241,242,0.35)', fontFamily: 'var(--font-sans)' }}>{item.metricLabel}</span>
-                <span style={{ marginLeft: 'auto', fontSize: 10, fontFamily: 'var(--font-mono)', color: 'rgba(232,241,242,0.22)', letterSpacing: '0.03em' }}>{item.time}</span>
+              <div className="flex items-baseline gap-1.5">
+                <span style={{ fontSize: 16, fontWeight: 600, color: '#E8F1F2', fontFamily: 'var(--font-sans)' }}>{item.metric}</span>
+                <span style={{ fontSize: 12, color: 'rgba(232,241,242,0.40)', fontFamily: 'var(--font-sans)' }}>{item.metricLabel}</span>
+                <span style={{ marginLeft: 'auto', fontSize: 11, fontFamily: 'var(--font-mono)', color: 'rgba(232,241,242,0.30)', letterSpacing: '0.04em' }}>{item.time}</span>
               </div>
             </div>
           ))}

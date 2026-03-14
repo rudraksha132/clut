@@ -8,6 +8,7 @@ import { prefersReducedMotion } from '@/lib/design-system'
 
 export function HookSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const logoMarkRef = useRef<HTMLImageElement>(null)
   const eyebrowRef = useRef<HTMLDivElement>(null)
   const statRef = useRef<HTMLHeadingElement>(null)
   const contextRef = useRef<HTMLParagraphElement>(null)
@@ -21,7 +22,7 @@ export function HookSection() {
     const reduced = prefersReducedMotion()
 
     if (reduced) {
-      ;[eyebrowRef, statRef, contextRef, dataLineRef, ctasRef, tickerRef].forEach((r) => {
+      ;[logoMarkRef, eyebrowRef, statRef, contextRef, dataLineRef, ctasRef, tickerRef].forEach((r) => {
         if (r.current) (r.current as HTMLElement).style.opacity = '1'
       })
       return
@@ -29,15 +30,19 @@ export function HookSection() {
 
     const tl = gsap.timeline()
 
-    if (eyebrowRef.current) {
-      gsap.set(eyebrowRef.current, { opacity: 0, y: 6 })
-      tl.to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.18)
+    if (logoMarkRef.current) {
+      gsap.set(logoMarkRef.current, { opacity: 0, scale: 0.8, y: 10 })
+      tl.to(logoMarkRef.current, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }, 0.1)
     }
 
-    // Hero stat: animate with opacity + y, NO SplitText to preserve background-clip gradient
+    if (eyebrowRef.current) {
+      gsap.set(eyebrowRef.current, { opacity: 0, y: 6 })
+      tl.to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.25)
+    }
+
     if (statRef.current) {
       gsap.set(statRef.current, { opacity: 0, y: 30, scale: 0.95 })
-      tl.to(statRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out' }, 0.28)
+      tl.to(statRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out' }, 0.35)
     }
 
     if (contextRef.current) {
@@ -71,24 +76,33 @@ export function HookSection() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '120px 24px 80px',
-        backgroundColor: '#0F1C2D',
+        backgroundColor: 'transparent', // Transparent per instruction
         overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1152 }}>
+      <div style={{ width: '100%', maxWidth: 1152, zIndex: 10, position: 'relative' }}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-start w-full">
 
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
 
-            {/* Eyebrow */}
-            <div ref={eyebrowRef}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.38)' }}>
-                CLUT Media · Results
-              </span>
+            {/* Logo Mark + Eyebrow */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <img 
+                ref={logoMarkRef}
+                src="/logo.png" 
+                alt="CLUT Media" 
+                style={{ width: 24, height: 24, objectFit: 'contain' }}
+              />
+              <div ref={eyebrowRef}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.50)' }}>
+                  CLUT Media · Results
+                </span>
+              </div>
             </div>
 
-            {/* Hero Stat — NO SplitText, use whole-element animation to preserve gradient */}
+            {/* Hero Stat */}
             <h1
               ref={statRef}
               style={{
@@ -99,11 +113,11 @@ export function HookSection() {
                 letterSpacing: '-0.06em',
                 fontWeight: 400,
                 margin: 0,
-                /* gradient text */
                 background: 'linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 55%, #5D727E 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
+                textShadow: '0 8px 32px rgba(11,19,43,0.4)', // Added faint shadow so it's readable if hero image is light
               }}
             >
               3.2M
@@ -114,10 +128,11 @@ export function HookSection() {
               ref={contextRef}
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(16px, 2vw, 22px)',
+                fontSize: 'clamp(18px, 2.5vw, 24px)',
                 lineHeight: 1.35,
                 letterSpacing: '-0.02em',
-                color: 'rgba(232,241,242,0.70)',
+                color: 'rgba(232,241,242,0.85)',
+                textShadow: '0 2px 8px rgba(11,19,43,0.5)', // readability on image map
                 margin: 0,
                 maxWidth: 480,
               }}
@@ -131,7 +146,7 @@ export function HookSection() {
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: 12,
-                color: 'rgba(232,241,242,0.35)',
+                color: 'rgba(232,241,242,0.60)', // Made slightly more visible
                 letterSpacing: '0.06em',
                 margin: 0,
               }}

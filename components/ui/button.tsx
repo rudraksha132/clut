@@ -45,9 +45,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }, [])
 
     const sizeStyles: Record<string, React.CSSProperties> = {
-      sm: { padding: '8px 20px', fontSize: 12 },
-      md: { padding: '12px 26px', fontSize: 14 },
-      lg: { padding: '14px 32px', fontSize: 14 },
+      sm: { padding: '8px 20px', fontSize: 13 },
+      md: { padding: '14px 28px', fontSize: 14 },
+      lg: { padding: '16px 36px', fontSize: 15 },
     }
 
     if (variant === 'primary') {
@@ -57,31 +57,31 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn('relative overflow-hidden cursor-pointer', className)}
           style={{
             backgroundColor: '#E8F1F2',
-            color: '#0F1C2D',
+            color: '#0B132B',
             borderRadius: 100,
             fontFamily: 'var(--font-sans)',
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: '0.04em',
             textTransform: 'uppercase',
             border: 'none',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 10,
+            gap: 12,
             transition: 'transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease',
-            boxShadow: '0 2px 12px rgba(232,241,242,0.15)',
+            boxShadow: '0 4px 16px rgba(232,241,242,0.15)',
             ...sizeStyles[size],
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.transform = 'scale(1.02)'
-            el.style.boxShadow = '0 6px 28px rgba(232,241,242,0.28)'
+            el.style.boxShadow = '0 8px 32px rgba(232,241,242,0.25)'
             el.style.backgroundColor = '#ffffff'
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.transform = 'scale(1)'
-            el.style.boxShadow = '0 2px 12px rgba(232,241,242,0.15)'
+            el.style.boxShadow = '0 4px 16px rgba(232,241,242,0.15)'
             el.style.backgroundColor = '#E8F1F2'
           }}
           {...props}
@@ -92,7 +92,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               position: 'absolute',
               width: 140,
               height: 140,
-              background: 'radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%)',
               borderRadius: '50%',
               transform: 'translate(-50%, -50%)',
               opacity: 0,
@@ -106,7 +106,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span style={{
             position: 'relative',
             zIndex: 1,
-            fontSize: '1.1em',
+            fontSize: '1.2em',
             display: 'inline-flex',
             alignItems: 'center',
           }}>→</span>
@@ -124,25 +124,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           color: '#E8F1F2',
           borderRadius: 100,
           fontFamily: 'var(--font-sans)',
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: '0.04em',
           textTransform: 'uppercase',
-          border: '1px solid rgba(232,241,242,0.20)',
+          border: '1px solid rgba(232,241,242,0.15)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 8,
+          gap: 12,
           transition: 'border-color 0.2s ease, background 0.2s ease',
           ...sizeStyles[size],
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLButtonElement
-          el.style.borderColor = 'rgba(232,241,242,0.50)'
-          el.style.backgroundColor = 'rgba(232,241,242,0.06)'
+          el.style.borderColor = 'rgba(232,241,242,0.40)'
+          el.style.backgroundColor = 'rgba(232,241,242,0.04)'
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLButtonElement
-          el.style.borderColor = 'rgba(232,241,242,0.20)'
+          el.style.borderColor = 'rgba(232,241,242,0.15)'
           el.style.backgroundColor = 'transparent'
         }}
         {...props}

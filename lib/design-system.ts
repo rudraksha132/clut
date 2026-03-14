@@ -4,17 +4,19 @@
  */
 
 export const COLORS = {
-  // Base Palette (Forge Light)
-  base: '#F8F7F4',
-  surface: '#EFEDE8',
-  ink: '#0E0C0A',
-  mist: 'rgba(14, 12, 10, 0.42)',
-  rule: 'rgba(14, 12, 10, 0.08)',
+  // Deep Forge Dark Palette
+  base: '#0B132B',
+  surface: '#11203A',
+  surface2: '#1A2E4A',
+  ink: '#E8F1F2',
+  mist: 'rgba(232, 241, 242, 0.40)',
+  rule: 'rgba(232, 241, 242, 0.08)',
 
   // Accents
-  cyan: '#00C4DB',
-  blue: '#1A4FD6',
-  ember: '#C85A2A',
+  slate: '#5D727E',
+  cyan: '#7FC8D1',
+  blue: '#3B6FD4',
+  ember: '#C87C4A',
 
   // States
   success: '#10B981',

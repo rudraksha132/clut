@@ -33,25 +33,51 @@ const TESTIMONIALS = [
 
 export function SocialSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const testimonialsWrapperRef = useRef<HTMLDivElement>(null)
+  const quoteRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
     if (prefersReducedMotion() || !sectionRef.current) return
 
-    cardRefs.current.forEach((card, index) => {
-      if (!card) return
-      gsap.from(card, {
-        opacity: 0,
-        y: 30,
-        duration: 0.9,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 78%',
-          toggleActions: 'play none none none',
-        },
-        delay: index * 0.1,
+    // Pin timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'center center',
+        end: `+=${TESTIMONIALS.length * 100}%`, // Scroll distance based on items
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+      },
+    })
+
+    // Setup: stack all quotes on top of each other, hide all but first
+    gsap.set(quoteRefs.current, { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', opacity: 0, y: 40 })
+    
+    // Animate them fading in and out on scroll
+    quoteRefs.current.forEach((quote, index) => {
+      if (!quote) return
+      
+      // Fade in and slide up
+      tl.to(quote, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power2.out',
       })
+      
+      // Hold it there
+      tl.to({}, { duration: 1 })
+      
+      // Fade out and slide up (unless it's the last one)
+      if (index < TESTIMONIALS.length - 1) {
+        tl.to(quote, {
+          opacity: 0,
+          y: -40,
+          duration: 1,
+          ease: 'power2.in',
+        })
+      }
     })
 
     return () => { ScrollTrigger.getAll().forEach((t) => t.kill()) }
@@ -61,80 +87,56 @@ export function SocialSection() {
     <section
       ref={sectionRef}
       id="social"
-      style={{ padding: '80px 24px', backgroundColor: '#0F1C2D' }}
+      className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center"
+      style={{ backgroundColor: '#0B132B' }}
     >
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ marginBottom: 56, textAlign: 'center' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.30)', marginBottom: 16 }}>
-            Testimonials
-          </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.1, letterSpacing: '-0.02em', color: '#E8F1F2', fontWeight: 400, margin: 0 }}>
-            Words from folks we've worked with.
-          </h2>
+      <div style={{ position: 'absolute', top: 80, width: '100%', textAlign: 'center', zIndex: 10 }}>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(232,241,242,0.30)' }}>
+          Testimonials
         </div>
+      </div>
 
-        {/* Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
-          {TESTIMONIALS.map((t, index) => (
-            <div
-              key={t.id}
-              ref={(el) => { cardRefs.current[index] = el }}
-              style={{
-                backgroundColor: '#162336',
-                border: '1px solid rgba(232,241,242,0.06)',
-                borderRadius: 16,
-                padding: '28px 32px',
-                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.borderColor = 'rgba(232,241,242,0.12)'
-                el.style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.borderColor = 'rgba(232,241,242,0.06)'
-                el.style.boxShadow = 'none'
-              }}
-            >
-              {/* Quote */}
-              <blockquote style={{ margin: '0 0 24px 0' }}>
-                <p style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
-                  fontSize: 'clamp(17px, 2.2vw, 22px)',
-                  lineHeight: 1.45,
-                  letterSpacing: '-0.02em',
-                  color: '#E8F1F2',
-                  margin: 0,
-                  opacity: 0.88,
-                }}>
-                  {t.quote}
+      <div 
+        ref={testimonialsWrapperRef} 
+        style={{ position: 'relative', width: '100%', maxWidth: 900, height: 400, margin: '0 auto' }}
+      >
+        {TESTIMONIALS.map((t, index) => (
+          <div
+            key={t.id}
+            ref={(el) => { quoteRefs.current[index] = el }}
+            style={{ textAlign: 'center', padding: '0 24px' }}
+          >
+            {/* Quote */}
+            <h3 style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: 'clamp(32px, 5vw, 64px)',
+              lineHeight: 1.2,
+              letterSpacing: '-0.02em',
+              color: '#E8F1F2',
+              margin: '0 0 48px 0',
+            }}>
+              "{t.quote}"
+            </h3>
+
+            {/* Attribution */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 24, padding: '12px 24px', backgroundColor: '#11203A', borderRadius: 100, border: '1px solid rgba(232,241,242,0.06)' }}>
+              <div style={{ textAlign: 'left' }}>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 600, color: '#E8F1F2', margin: '0 0 2px 0' }}>{t.name}</p>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(232,241,242,0.40)', margin: 0 }}>{t.role}</p>
+              </div>
+              
+              <div style={{ width: 1, height: 32, backgroundColor: 'rgba(232,241,242,0.08)' }} />
+              
+              <div style={{ textAlign: 'right' }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(127,200,209,0.5)', margin: '0 0 4px 0' }}>Result</p>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 600, color: '#7FC8D1', letterSpacing: '-0.01em', margin: 0 }}>
+                  {t.result}
                 </p>
-              </blockquote>
-
-              {/* Attribution */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-                <div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: '#E8F1F2', margin: '0 0 2px 0' }}>{t.name}</p>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'rgba(232,241,242,0.35)', margin: 0 }}>{t.role}</p>
-                </div>
-                {/* Result pill */}
-                <div style={{
-                  backgroundColor: 'rgba(127,200,209,0.10)',
-                  border: '1px solid rgba(127,200,209,0.22)',
-                  borderRadius: 100,
-                  padding: '5px 14px',
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
-                }}>
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, color: '#7FC8D1' }}>{t.result}</span>
-                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   )

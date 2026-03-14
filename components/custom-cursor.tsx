@@ -49,10 +49,11 @@ export function CustomCursor() {
     const handleMouseOver = (e: MouseEvent) => {
       if (!(e.target instanceof Element)) return
       if (e.target.closest('a, button, [role="button"]')) {
-        if (outerRef.current) {
+        if (outerRef.current && innerRef.current) {
           outerRef.current.style.transform = 'translate(-50%, -50%) scale(1.8)'
-          outerRef.current.style.borderColor = 'rgba(127,200,209,0.7)'
-          outerRef.current.style.backgroundColor = 'rgba(127,200,209,0.06)'
+          outerRef.current.style.borderColor = 'rgba(127,200,209,0.8)'
+          outerRef.current.style.backgroundColor = 'rgba(127,200,209,0.08)'
+          innerRef.current.style.backgroundColor = '#E8F1F2'
         }
       }
     }
@@ -60,10 +61,11 @@ export function CustomCursor() {
     const handleMouseOut = (e: MouseEvent) => {
       if (!(e.target instanceof Element)) return
       if (e.target.closest('a, button, [role="button"]')) {
-        if (outerRef.current) {
+        if (outerRef.current && innerRef.current) {
           outerRef.current.style.transform = 'translate(-50%, -50%) scale(1)'
-          outerRef.current.style.borderColor = 'rgba(232,241,242,0.30)'
+          outerRef.current.style.borderColor = 'rgba(232,241,242,0.25)'
           outerRef.current.style.backgroundColor = 'transparent'
+          innerRef.current.style.backgroundColor = '#7FC8D1'
         }
       }
     }
@@ -88,9 +90,9 @@ export function CustomCursor() {
         ref={outerRef}
         style={{
           position: 'fixed',
-          width: 26,
-          height: 26,
-          border: '1.5px solid rgba(232,241,242,0.30)',
+          width: 32,
+          height: 32,
+          border: '1.5px solid rgba(232,241,242,0.25)',
           borderRadius: '50%',
           opacity: 0,
           transform: 'translate(-50%, -50%)',
@@ -98,6 +100,7 @@ export function CustomCursor() {
           zIndex: 9999,
           pointerEvents: 'none',
           backgroundColor: 'transparent',
+          mixBlendMode: 'difference',
         }}
         className="hidden lg:block"
       />
@@ -105,15 +108,16 @@ export function CustomCursor() {
         ref={innerRef}
         style={{
           position: 'fixed',
-          width: 5,
-          height: 5,
+          width: 6,
+          height: 6,
           backgroundColor: '#7FC8D1',
           borderRadius: '50%',
           opacity: 0,
           transform: 'translate(-50%, -50%)',
-          transition: 'opacity 0.2s ease',
+          transition: 'opacity 0.2s ease, background-color 0.2s ease',
           zIndex: 9999,
           pointerEvents: 'none',
+          mixBlendMode: 'difference',
         }}
         className="hidden lg:block"
       />
