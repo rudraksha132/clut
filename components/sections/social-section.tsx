@@ -48,7 +48,6 @@ export function SocialSection() {
         end: `+=${TESTIMONIALS.length * 100}%`, // Scroll distance based on items
         pin: true,
         scrub: 1,
-        anticipatePin: 1,
       },
     })
 

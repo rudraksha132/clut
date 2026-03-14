@@ -83,7 +83,6 @@ export function ProofSection() {
         end: '+=200%', // Scroll for 2 screen heights
         pin: true,
         scrub: 1, // Smooth scrubbing
-        anticipatePin: 1,
       },
     })
 

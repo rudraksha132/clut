@@ -38,7 +38,6 @@ export function ProcessSection() {
         end: '+=150%', // Scroll distance
         pin: true,
         scrub: 1, // Smooth scrubbing
-        anticipatePin: 1,
       },
     })
 
