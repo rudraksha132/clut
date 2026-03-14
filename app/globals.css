@@ -2,8 +2,16 @@
 
 @font-face {
   font-family: 'PP Editorial New';
-  src: url('/fonts/PPEditorialNew-Ultralight.otf') format('opentype');
+  src: url('https://github.com/rudraksha132/srcmed/blob/main/fonts/pp-editorial-new/PPEditorialNew-UltralightItalic.otf?raw=true') format('opentype');
   font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lay Grotesk';
+  src: url('https://github.com/rudraksha132/srcmed/blob/main/fonts/lg.otf?raw=true') format('opentype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -15,24 +23,24 @@
   /* Cinema black, blue-shifted. Not warm charcoal (old/earthy).
      The blue undertone signals: digital night, recording studio,
      post-production suite. Focused attention without depression. */
-  --base: #070E1B;
+  --base: #000610;
   /* Card/panel lift. Matte, expensive. Just enough separation
      from --base to show depth without leaking into medium blue. */
-  --surface: #0C1C30;
+  --surface: #000811;
   /* Hover / elevated states. "Lit from within." Interactive 
      feedback without brightness shock. */
-  --surface-2: #132540;
+  --surface-2: #000A18;
 
   /* ── Typography ── */
   /* Slightly cool off-white. Pure #FFFFFF on dark causes halation —
      the glow that makes text feel harsh and exhausting.
      Cool-tinted off-white reads as precise, editorial, trusted.
      Signals: serious publication, not a landing page template. */
-  --ink: #EAF0F2;
+  --ink: #ecfaff;
   /* Secondary text. 44% opacity preserves the cool undertone
      while stepping back in hierarchy. Not a new color — just
      the same ink, breathing. */
-  --mist: rgba(234, 240, 242, 0.44);
+  --mist: rgba(224, 247, 255, 0.44);
   /* Hairline dividers. Barely visible — felt not seen. */
   --rule: rgba(234, 240, 242, 0.07);
 
@@ -50,9 +58,7 @@
      - Yellow (#FFD700) = caution, cheap, highlighter
      - Brown = earth, old, web 2008
      #D08030 sits in the trophy zone: warm, prestigious, earned.
-     This is what a viral notification looks like in a dark room.
-     It triggers reward circuits. White text on #D08030 passes 4.5:1. */
-  --ember: #D08030;
+     This is what a viral notification looks like in a dark room. */
 
   /* ── Secondary accent: Cyan-bright ── */
   /* Screen glow in a dark room.
@@ -77,15 +83,26 @@
      headline floats on a clean dark field. */
   --hero-overlay: linear-gradient(180deg, rgba(7, 14, 27, 0.10) 0%, rgba(7, 14, 27, 0.60) 55%, rgba(7, 14, 27, 0.97) 100%);
 
-  /* ── Gradient text ── */
-  /* Used on hero stat numbers and the "20 minutes." headline.
-     Reads: precise, credible, earned — not rainbow, not generic
-     white-to-blue. The teal midpoint is the psychological pivot. */
-  --gradient-evidence: linear-gradient(135deg, #EAF0F2 0%, #3FC0CC 48%, #607A88 100%);
+  /* New Base Palette */
+  --base: #000617;
+  /* Ink Black */
+  --ink: #eff9ff;
+  /* Frosted Mint (using as primary ink) */
+  --mist: #caf1ff;
+  /* Cool Steel */
+  --rule: rgba(132, 168, 181, 0.12);
 
-  /* Semantic */
-  --background: var(--base);
-  --foreground: var(--ink);
+  /* Primary Accent: Frosted Mint */
+  --mint: #e0f4ff;
+  --mint-glow: rgba(224, 238, 249, 0.22);
+
+  /* Data Accent: Cool Steel */
+  --cyan-bright: #96c0cf;
+
+  /* Gradients */
+  --gradient-evidence: linear-gradient(135deg, var(--mint) 0%, var(--mist) 60%, #445566 100%);
+  --hero-overlay: radial-gradient(circle at center, transparent 0%, var(--base) 85%);
+  --surface-glass: rgba(1, 7, 25, 0.75);
   --border: var(--rule);
   --accent: var(--slate);
   --secondary: var(--surface);
@@ -116,12 +133,9 @@
 
 @theme inline {
   /* Fonts */
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Instrument Serif', serif;
-  --font-editorial: 'PP Editorial New', serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  /* Colors */
+  --font-sans: 'Lay Grotesk', 'Inter', sans-serif;
+  --font-serif: 'PP Editorial New', 'Instrument Serif', serif;
+  --font-mono: 'Inter', sans-serif;
   --color-base: var(--base);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -171,8 +185,20 @@
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+::selection {
+  background-color: var(--mint);
+  color: var(--base);
 }
 
 * {
@@ -197,7 +223,12 @@
     display: none;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-serif);
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -214,14 +245,22 @@
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .text-pretty { text-wrap: pretty; }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
 
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
   .gradient-text {
     background: var(--gradient-evidence);
@@ -230,12 +269,22 @@
     background-clip: text;
   }
 
-  .scroll-smooth { scroll-behavior: smooth; }
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
 
   /* Font weight utilities */
-  .font-500 { font-weight: 500; }
-  .font-600 { font-weight: 600; }
-  .font-700 { font-weight: 700; }
+  .font-500 {
+    font-weight: 500;
+  }
+
+  .font-600 {
+    font-weight: 600;
+  }
+
+  .font-700 {
+    font-weight: 700;
+  }
 
   /* Typography utilities */
   /* Hierarchy rules:
@@ -246,59 +295,139 @@
      • Data / metrics / mono labels → JetBrains Mono, var(--cyan-bright)
      • Secondary body → var(--mist) */
   .text-hero-stat {
-    font-size: var(--text-hero-stat);
-    line-height: var(--text-hero-stat-lh);
+    font-size: clamp(80px, 13vw, 168px);
+    line-height: 0.84;
     letter-spacing: -0.06em;
+    font-weight: 400;
   }
+
   .text-hero-label {
-    font-size: var(--text-hero-label);
-    line-height: 1.3;
+    font-family: var(--font-sans);
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.35;
     letter-spacing: -0.02em;
   }
+
   .text-headline {
-    font-size: var(--text-headline);
+    font-family: var(--font-serif);
+    font-weight: 400;
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
+
   .text-body {
-    font-size: var(--text-body);
-    line-height: 1.68;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
   }
+
   .text-eyebrow {
     font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    color: color-mix(in srgb, var(--ember) 65%, transparent);
-    letter-spacing: 0.20em;
+    /* Now Inter */
+    font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 0.12em;
+    /* Reduced for Inter */
+    color: color-mix(in srgb, var(--mist) 85%, transparent);
+    font-weight: 600;
   }
+
   .text-data {
-    font-size: var(--text-data);
+    font-family: var(--font-mono);
+    font-size: 11px;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   /* Font family utilities */
-  .font-sans { font-family: var(--font-sans); }
-  .font-serif { font-family: var(--font-serif); }
-  .font-editorial { font-family: var(--font-editorial); }
-  .font-mono { font-family: var(--font-mono); }
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-editorial {
+    font-family: var(--font-editorial);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
 
   /* Color text utilities */
-  .text-ink { color: var(--ink); }
-  .text-mist { color: var(--mist); }
-  .text-slate { color: var(--slate); }
-  .text-cyan { color: var(--cyan-bright); }
-  .text-blue { color: var(--blue); }
-  .text-ember { color: var(--ember); }
+  .text-ink {
+    color: var(--ink);
+  }
+
+  .text-mist {
+    color: var(--mist);
+  }
+
+  .text-slate {
+    color: var(--slate);
+  }
+
+  .text-cyan {
+    color: var(--cyan-bright);
+  }
+
+  .text-blue {
+    color: var(--blue);
+  }
+
+  .text-ember {
+    color: var(--ember);
+  }
+
+  /* Colors & Effects */
+  .text-mint {
+    color: var(--mint);
+  }
+
+  .text-steel {
+    color: var(--mist);
+  }
+
+  .gradient-text {
+    background: var(--gradient-evidence);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
   /* Color bg utilities */
-  .bg-base { background-color: var(--base); }
-  .bg-surface { background-color: var(--surface); }
-  .bg-surface-2 { background-color: var(--surface-2); }
-  .bg-ink { background-color: var(--ink); }
-  .bg-slate { background-color: var(--slate); }
+  .bg-base {
+    background-color: var(--base);
+  }
+
+  .bg-surface {
+    background-color: var(--surface);
+  }
+
+  .bg-surface-2 {
+    background-color: var(--surface-2);
+  }
+
+  .bg-ink {
+    background-color: var(--ink);
+  }
+
+  .bg-slate {
+    background-color: var(--slate);
+  }
 
   /* Border utilities */
-  .border-rule { border-color: var(--rule); }
-  .border-slate { border-color: var(--slate); }
-  .border-ink { border-color: var(--ink); }
+  .border-rule {
+    border-color: var(--rule);
+  }
+
+  .border-slate {
+    border-color: var(--slate);
+  }
+
+  .border-ink {
+    border-color: var(--ink);
+  }
 }

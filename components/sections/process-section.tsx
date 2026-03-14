@@ -42,7 +42,7 @@ export function ProcessSection() {
     })
 
     // Setup initial states
-    gsap.set(stepContainerRefs.current, { opacity: 0.3, y: 20 })
+    gsap.set(stepContainerRefs.current, { opacity: 0.3 })
     gsap.set(lineRefs.current, { scaleX: 0, transformOrigin: 'left center' })
     gsap.set(stepDotRefs.current, { backgroundColor: '#1A2E4A', borderColor: 'rgba(232,241,242,0.12)' })
 
@@ -51,15 +51,14 @@ export function ProcessSection() {
       // 1. Light up current step
       tl.to(stepContainerRefs.current[index], {
         opacity: 1,
-        y: 0,
         duration: 0.5,
       }, index * 1.5)
 
       // 2. Light up the dot
       tl.to(stepDotRefs.current[index], {
-        backgroundColor: 'var(--ember)',
-        borderColor: 'var(--ember)',
-        boxShadow: '0 0 0 8px var(--amber-glow)',
+        backgroundColor: 'var(--mint)',
+        borderColor: 'var(--mint)',
+        boxShadow: '0 0 0 8px var(--mint-glow)',
         scale: 1.25,
         duration: 0.15,
         ease: 'power2.out',
@@ -94,7 +93,7 @@ export function ProcessSection() {
       id="process"
       className="relative w-full h-screen overflow-hidden flex flex-col justify-center"
       style={{
-        backgroundImage: 'linear-gradient(color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--surface) 92%, transparent)), url(/assets/hero/process-bg.jpg)',
+        backgroundColor: 'var(--base)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -103,7 +102,7 @@ export function ProcessSection() {
       <div ref={containerRef} style={{ maxWidth: 1152, margin: '0 auto', width: '100%', padding: '0 24px' }}>
         {/* Header */}
         <div style={{ marginBottom: 80, textAlign: 'center' }}>
-          <div className="text-eyebrow" style={{ color: 'var(--ember)', opacity: 0.65, marginBottom: 16 }}>
+          <div className="text-eyebrow" style={{ color: 'var(--mist)', opacity: 0.65, marginBottom: 16 }}>
             How We Work
           </div>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px, 4.5vw, 52px)', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--ink)', fontWeight: 400, fontStyle: 'italic', margin: 0 }}>
@@ -154,7 +153,7 @@ export function ProcessSection() {
                     right: '50%', // Centers between the two step columns
                     left: '-50%',
                     height: 2,
-                    backgroundColor: 'var(--ember)',
+                    backgroundColor: 'var(--mint)',
                     zIndex: -1,
                   }}
                 />
@@ -175,7 +174,7 @@ export function ProcessSection() {
                   transition: 'background-color 0.3s, border-color 0.3s, box-shadow 0.3s',
                 }}
               >
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'color-mix(in srgb, var(--ember) 55%, transparent)', letterSpacing: '0.04em', fontWeight: 600 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'color-mix(in srgb, var(--mint) 75%, transparent)', letterSpacing: '0.04em', fontWeight: 600 }}>
                   {step.number}
                 </span>
               </div>

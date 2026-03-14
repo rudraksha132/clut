@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/lib/design-system'
+import { WordSplit } from '@/components/ui/word-split'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -71,9 +72,27 @@ export function ProofSection() {
   const headerRef = useRef<HTMLDivElement>(null)
   const cardsWrapperRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const quoteRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
-    if (prefersReducedMotion() || !sectionRef.current || !cardsWrapperRef.current) return
+    if (!sectionRef.current || !cardsWrapperRef.current) return
+    const reduced = prefersReducedMotion()
+    
+    if (reduced) {
+      // Show everything statically if user prefers no motion
+      gsap.set(cardRefs.current, { x: 0, opacity: 1, scale: 1, position: 'relative', margin: '0 0 40px 0' })
+      const allWords = sectionRef.current.querySelectorAll('[data-word]')
+      gsap.set(allWords, { opacity: 1, y: 0 })
+      return
+    }
+
+    // Targeted ref cleanup to avoid stale entries
+    cardRefs.current = cardRefs.current.filter(Boolean)
+    quoteRefs.current = quoteRefs.current.filter(Boolean)
+
+    // Fixed: Initial state for quote words set BEFORE timeline
+    const allWords = sectionRef.current.querySelectorAll('[data-word]')
+    gsap.set(allWords, { opacity: 0, y: 16 })
 
     // Create a pinned timeline
     const tl = gsap.timeline({
@@ -89,8 +108,9 @@ export function ProofSection() {
     // Cards start off-screen right
     gsap.set(cardRefs.current, { 
       x: '100vw',
-      opacity: 0.2,
+      opacity: 0.2, // reveal slightly
       scale: 0.9,
+      visibility: 'visible', // reveal now that GSAP is in control
     })
 
     // Header fades out slightly as we scroll
@@ -98,26 +118,42 @@ export function ProofSection() {
 
     // Bring cards in one by one horizontally
     cardRefs.current.forEach((card, i) => {
-      // Calculate position so they stack nicely
-      const xOffset = i * 20; // Slight offset so they don't perfectly overlap until end? Or side-by-side depending on layout.
+      // Stack from right to left with significant separation
+      const activeX = i * -80; // Base position when active
+      const activeY = i * 20;
+      const rotationY = i * -8;
       
-      // Let's make them slide in and stack
-      // Move card to center
       tl.to(card, {
-        x: xOffset,
+        x: activeX,
+        y: activeY,
+        rotationY: rotationY,
         opacity: 1,
         scale: 1,
         duration: 1.5,
-        ease: 'power2.out',
-      }, i * 0.8) // staggered start times
+        ease: 'power3.out',
+      }, i * 0.8)
       
-      // Push previous cards slightly back
+      // Word stagger reveal plays correctly now that initial state is set
+      const words = quoteRefs.current[i]?.querySelectorAll('[data-word]')
+      if (words && words.length > 0) {
+        tl.to(words, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: 'power2.out',
+        }, (i * 0.8) + 0.6)
+      }
+      
+      // Push previous cards slightly back and more to the left
+      // Fixed: Formula ensures deterministic positions and prevents flying off-screen
       if (i > 0) {
         for (let j = 0; j < i; j++) {
           tl.to(cardRefs.current[j], {
-            scale: 1 - ((i - j) * 0.05),
-            x: -((i - j) * 40),
-            opacity: Math.max(0.4, 1 - ((i - j) * 0.3)),
+            x: (j * -80) - ((i - j) * 120),
+            y: (j * 20) - ((i - j) * 10),
+            scale: Math.max(0.82, 0.95 - ((i - j) * 0.03)),
+            opacity: Math.max(0.15, 0.8 - ((i - j) * 0.25)),
             duration: 1.5,
             ease: 'power2.out',
           }, i * 0.8)
@@ -128,7 +164,11 @@ export function ProofSection() {
     // Give a little pause at the end of the timeline
     tl.to({}, { duration: 0.5 })
 
-    return () => { ScrollTrigger.getAll().forEach((t) => t.kill()) }
+    return () => { 
+      // Fixed: Targeted cleanup
+      tl.scrollTrigger?.kill()
+      tl.kill()
+    }
   }, [])
 
   return (
@@ -137,15 +177,12 @@ export function ProofSection() {
       id="proof"
       className="relative w-full h-screen overflow-hidden flex items-center"
       style={{
-        backgroundImage: 'linear-gradient(color-mix(in srgb, var(--base) 90%, transparent), color-mix(in srgb, var(--base) 90%, transparent)), url(/assets/hero/hero-bg.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundColor: 'var(--base)',
       }}
     >
       <div 
         ref={containerRef}
-        className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-12"
+        className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-24"
       >
         {/* Left: Sticky Header area within the pinned section */}
         <div ref={headerRef} className="w-full md:w-1/3 z-10">
@@ -160,48 +197,54 @@ export function ProofSection() {
         {/* Right: Card Stacking Area */}
         <div 
           ref={cardsWrapperRef} 
-          className="w-full md:w-1/2 relative h-[500px]"
-          style={{ perspective: 1000 }}
+          style={{ position: 'relative', width: 480, minWidth: 480, height: 620, perspective: 1200 }}
         >
           {CASE_STUDIES.map((study, index) => (
             <div
               key={study.id}
               ref={(el) => { cardRefs.current[index] = el }}
-              className="absolute top-0 right-0 w-full max-w-md"
+              className="absolute top-0 right-0"
               style={{
-                backgroundColor: 'var(--surface)',
-                borderRadius: 20,
-                padding: '32px',
-                boxShadow: 'inset 0 0 0 1px rgba(234,240,242,0.07), 0 24px 48px -12px rgba(0,0,0,0.5)',
+                width: 440,
+                opacity: 0, // Prevent hydration flash
+                visibility: 'hidden', // Preventive against flash
+                backgroundColor: 'rgba(11, 19, 43, 0.85)', // var(--base) with slight transparency
+                backdropFilter: 'blur(12px)',
+                borderRadius: 24,
+                padding: '24px', // Tighter padding for larger image focus
+                border: '1px solid var(--rule)',
+                boxShadow: '0 40px 80px -20px rgba(0,0,0,0.5)', 
                 willChange: 'transform, opacity',
                 transformOrigin: 'right center',
               }}
             >
+              {/* Fixed Image Container */}
               <div style={{
                 position: 'relative',
-                aspectRatio: '16/9',
                 width: '100%',
-                borderRadius: 8,
+                height: 280, // Increased height for more prominence
+                borderRadius: 12, // Softer inner radius
                 overflow: 'hidden',
-                marginBottom: 24
+                marginBottom: 24 // Balanced spacing
               }}>
                 <Image
                   src={study.image}
                   alt={`${study.platform} case study`}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="440px"
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                  priority={index === 0} // Priority loading for visible pinned elements
                 />
                 <div style={{
                   position: 'absolute', inset: 0,
-                  background: 'linear-gradient(180deg, transparent 25%, rgba(7,14,27,0.88) 100%)',
+                  background: 'linear-gradient(180deg, transparent 25%, var(--base) 100%)',
                   zIndex: 1
                 }}/>
               </div>
 
               {/* Platform badge */}
               <div style={{ position: 'relative', zIndex: 2 }}>
-                <div className="text-eyebrow" style={{ color: 'var(--ember)', marginBottom: 12 }}>
+                <div className="text-eyebrow text-steel" style={{ marginBottom: 12 }}>
                   {study.platform} · {study.niche}
                 </div>
                 <h3 className="text-headline" style={{ color: 'var(--ink)', margin: '0 0 24px 0', fontSize: 'clamp(20px, 2.5vw, 24px)' }}>
@@ -226,11 +269,15 @@ export function ProofSection() {
                   ))}
                 </div>
 
-                {/* Quote */}
-                <p className="text-body" style={{ color: 'var(--mist)', margin: '0 0 16px 0', fontStyle: 'italic' }}>
-                  "{study.quote}"
-                </p>
-                <p className="text-data text-cyan" style={{ margin: 0, opacity: 0.55 }}>
+                {/* Quote with WordSplit */}
+                <div 
+                  ref={(el) => { quoteRefs.current[index] = el }}
+                  className="text-body" 
+                  style={{ color: 'var(--mist)', margin: '0 0 16px 0', fontStyle: 'italic', display: 'block' }}
+                >
+                  "<WordSplit text={study.quote} />"
+                </div>
+                <p className="text-data text-steel" style={{ margin: 0, opacity: 0.55 }}>
                   — {study.founder}
                 </p>
               </div>

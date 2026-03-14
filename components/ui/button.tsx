@@ -9,7 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', className, children, ...props }, ref) => {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const beamRef = useRef<HTMLSpanElement>(null)
@@ -45,9 +45,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }, [])
 
     const sizeStyles: Record<string, React.CSSProperties> = {
-      sm: { padding: '8px 20px', fontSize: 13 },
-      md: { padding: '14px 28px', fontSize: 14 },
-      lg: { padding: '16px 36px', fontSize: 15 },
+      sm: { padding: '10px 24px', fontSize: 13 },
+      md: { padding: '14px 36px', fontSize: 14 },
+      lg: { padding: '18px 48px', fontSize: 15 },
     }
 
     if (variant === 'primary') {
@@ -56,8 +56,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={buttonRef}
           className={cn('relative overflow-hidden cursor-pointer', className)}
           style={{
-            backgroundColor: '#E8F1F2',
-            color: '#0B132B',
+            backgroundColor: 'var(--ink)',
+            color: 'var(--base)',
             borderRadius: 100,
             fontFamily: 'var(--font-sans)',
             fontWeight: 700,
@@ -75,41 +75,18 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.transform = 'scale(1.02)'
-            el.style.boxShadow = '0 8px 32px rgba(232,241,242,0.25)'
+            el.style.boxShadow = '0 8px 32px var(--mint-glow)'
             el.style.backgroundColor = '#ffffff'
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.transform = 'scale(1)'
-            el.style.boxShadow = '0 4px 16px rgba(232,241,242,0.15)'
-            el.style.backgroundColor = '#E8F1F2'
+            el.style.boxShadow = '0 4px 16px rgba(0,0,0,0.15)'
+            el.style.backgroundColor = 'var(--ink)'
           }}
           {...props}
         >
-          <span
-            ref={beamRef}
-            style={{
-              position: 'absolute',
-              width: 140,
-              height: 140,
-              background: 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%)',
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)',
-              opacity: 0,
-              transition: 'opacity 0.3s ease',
-              pointerEvents: 'none',
-              left: '50%',
-              top: '50%',
-            }}
-          />
-          <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
-          <span style={{
-            position: 'relative',
-            zIndex: 1,
-            fontSize: '1.2em',
-            display: 'inline-flex',
-            alignItems: 'center',
-          }}>→</span>
+          <span style={{ position: 'relative', zIndex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{children}</span>
         </button>
       )
     }
@@ -121,13 +98,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn('cursor-pointer', className)}
         style={{
           backgroundColor: 'transparent',
-          color: '#E8F1F2',
+          color: 'var(--ink)',
           borderRadius: 100,
           fontFamily: 'var(--font-sans)',
           fontWeight: 600,
           letterSpacing: '0.04em',
           textTransform: 'uppercase',
-          border: '1px solid rgba(232,241,242,0.15)',
+          border: '1px solid var(--rule)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -137,12 +114,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLButtonElement
-          el.style.borderColor = 'rgba(232,241,242,0.40)'
-          el.style.backgroundColor = 'rgba(232,241,242,0.04)'
+          el.style.borderColor = 'rgba(255, 255, 255, 0.40)'
+          el.style.backgroundColor = 'rgba(255, 255, 255, 0.04)'
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLButtonElement
-          el.style.borderColor = 'rgba(232,241,242,0.15)'
+          el.style.borderColor = 'var(--rule)'
           el.style.backgroundColor = 'transparent'
         }}
         {...props}

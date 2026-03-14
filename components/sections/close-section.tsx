@@ -44,7 +44,7 @@ export function CloseSection() {
       ref={sectionRef}
       id="close"
       style={{
-        minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -118,7 +118,7 @@ export function CloseSection() {
               justifyContent: 'center',
               gap: 8,
             }}>
-              <div style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: 'var(--cyan-bright)' }} />
+              <div style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: 'var(--mint)' }} />
               <span className="text-data" style={{ color: 'var(--mist)', margin: 0 }}>{text}</span>
             </div>
           ))}
@@ -126,7 +126,7 @@ export function CloseSection() {
       </div>
 
       {/* Footer */}
-      <footer style={{ marginTop: 100, paddingTop: 32, borderTop: '1px solid var(--rule)', width: '100%', maxWidth: 960 }}>
+      <footer style={{ marginTop: 50, paddingTop: 32, borderTop: '1px solid var(--rule)', width: '100%', maxWidth: 960 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <img src="/logo.jpg" alt="" style={{ width: 16, height: 16, opacity: 0.6 }} />

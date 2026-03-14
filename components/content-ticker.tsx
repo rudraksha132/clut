@@ -65,11 +65,11 @@ export function ContentTicker() {
 
   return (
     <div className="relative h-full overflow-hidden rounded-2xl" style={{
-      borderTop: '2px solid var(--ember)',
+      borderTop: '2px solid var(--mint)',
       borderRight: '1px solid var(--rule)',
       borderBottom: '1px solid var(--rule)',
       borderLeft: '1px solid var(--rule)',
-      backgroundColor: 'var(--surface)',
+      backgroundColor: 'var(--base)',
       boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
     }}>
       {/* Header */}
@@ -77,9 +77,9 @@ export function ContentTicker() {
         <div
           className="w-2 h-2 rounded-full"
           style={{
-            backgroundColor: 'var(--ember)',
+            backgroundColor: 'var(--mint)',
             animation: 'pulse-dot 2s ease-in-out infinite',
-            boxShadow: '0 0 8px var(--amber-glow)',
+            boxShadow: '0 0 8px var(--mint-glow)',
           }}
         />
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(232,241,242,0.40)' }}>

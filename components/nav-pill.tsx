@@ -31,7 +31,7 @@ export function NavPill() {
     <nav
       style={{
         position: 'fixed',
-        top: 28,
+        top: 32,
         left: '50%',
         transform: `translateX(-50%) translateY(${isVisible ? '0' : '-20px'})`,
         opacity: isVisible ? 1 : 0,
@@ -41,97 +41,48 @@ export function NavPill() {
       }}
     >
       <div
-        className="w-auto min-w-max md:min-w-[520px] max-w-[95vw]"
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '10px 18px',
+          padding: '8px 24px', // Tighter vertical, wider horizontal
           borderRadius: 100,
-          backdropFilter: 'blur(20px) saturate(1.6)',
-          WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
-          backgroundColor: 'var(--surface-glass)',
-          boxShadow: 'inset 0 0 0 1px rgba(234,240,242,0.09)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.05)', // Extremely subtle white wash
+          border: '1px solid rgba(255, 255, 255, 0.08)', // Delicate border
+          gap: 16, // Even tighter for peak minimalism
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.01em' }}>
-            CLUT
-          </span>
-          </div>
+        {/* Logo */}
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500, letterSpacing: '0em', color: 'var(--ink)' }}>
+          CLUT.
+        </span>
 
-          {/* Divider */}
-          <div style={{ width: 1, height: 18, backgroundColor: 'var(--rule)' }} />
-        </div>
+        {/* Separator Dot */}
+        <div style={{ width: 2, height: 2, borderRadius: '50%', backgroundColor: 'var(--mist)' }} />
 
         {/* Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 8 }}>
-          {NAV_LINKS.map((link) =>
-            link.isCTA ? (
-              <a
-                key={link.href}
-                href={link.href}
-                style={{
-                  padding: '6px 16px',
-                  backgroundColor: 'var(--ember)',
-                  color: 'white',
-                  borderRadius: 100,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  letterSpacing: '0.02em',
-                  marginLeft: 6,
-                  transition: 'opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease',
-                  display: 'inline-block',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.backgroundColor = '#B8701A'
-                  el.style.transform = 'scale(1.02)'
-                  el.style.boxShadow = '0 0 12px var(--amber-glow)'
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.backgroundColor = 'var(--ember)'
-                  el.style.transform = 'scale(1)'
-                  el.style.boxShadow = 'none'
-                }}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <a
-                className="hidden md:inline-block"
-                key={link.href}
-                href={link.href}
-                style={{
-                  padding: '6px 10px',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: 'var(--mist)',
-                  textDecoration: 'none',
-                  borderRadius: 100,
-                  transition: 'color 0.2s ease, background 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = 'var(--ink)'
-                  el.style.backgroundColor = 'rgba(208,128,48,0.08)'
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = 'var(--mist)'
-                  el.style.backgroundColor = 'transparent'
-                }}
-              >
-                {link.label}
-              </a>
-            )
-          )}
+        <div className="hidden md:flex" style={{ alignItems: 'center', gap: 28 }}>
+          {NAV_LINKS.filter(l => !l.isCTA).map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 10,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: 'var(--mist)',
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--ink)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--mist)' }}
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
     </nav>

@@ -3,64 +3,40 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
+import { WordSplit } from '@/components/ui/word-split'
 
-gsap.registerPlugin(ScrollTrigger, SplitText)
+gsap.registerPlugin(ScrollTrigger)
 
 export function EarlyStages() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
+  const textContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!sectionRef.current || !textRef.current) return
+    if (!sectionRef.current) return
 
-    let split: SplitText | null = null
-
-    const initSplitText = () => {
-      split = new SplitText(textRef.current, {
-        type: 'lines, words',
-        linesClass: 'overflow-hidden line-wrapper',
-      })
-
-      // Animation: Blur to Unblur on scroll
-      gsap.fromTo(
-        split.words,
-        {
-          filter: 'blur(20px)',
-          opacity: 0,
-          y: 30,
-        },
-        {
-          filter: 'blur(0px)',
-          opacity: 1,
-          y: 0,
-          stagger: {
-            amount: 1.5,
-            from: 'start',
-          },
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-            end: 'bottom 80%',
-            scrub: 1,
-            markers: false,
-          }
+    const words = sectionRef.current.querySelectorAll('[data-word]')
+    
+    if (words.length > 0) {
+      // Pinning/Highlight animation: Word by word illumination
+      gsap.to(words, {
+        opacity: 1,
+        color: 'var(--ink)',
+        y: 0,
+        filter: 'blur(0px)',
+        stagger: 0.1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=100%',
+          pin: true,
+          scrub: 1,
         }
-      )
-    }
-
-    // Wait for fonts to be ready to ensure correct measurements for SplitText
-    if (document.fonts) {
-      document.fonts.ready.then(() => {
-        initSplitText()
       })
-    } else {
-      // Fallback
-      setTimeout(initSplitText, 500)
     }
 
     return () => {
-      split?.revert()
+      ScrollTrigger.getAll().forEach(st => st.kill())
     }
   }, [])
 
@@ -73,8 +49,10 @@ export function EarlyStages() {
         <span className="font-mono text-eyebrow text-ember uppercase tracking-widest mb-6 block">
           Current Phase: Alpha
         </span>
-        <div ref={textRef} className="font-editorial text-headline leading-tight lowercase">
-          We are currently in the early stages of our journey, meticulously sculpting a platform that merges human intuition with algorithmic precision. The potential is vast, and we are just getting started.
+        <div ref={textContainerRef} className="font-editorial text-headline leading-tight lowercase" style={{ opacity: 1 }}>
+          <WordSplit 
+            text="We are currently in the early stages of our journey, meticulously sculpting a platform that merges human intuition with algorithmic precision. The potential is vast, and we are just getting started." 
+          />
         </div>
       </div>
     </section>
