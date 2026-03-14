@@ -1,0 +1,236 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'PP Editorial New';
+  src: url('/fonts/PPEditorialNew-Ultralight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* CLUT Media Design System — Deep Navy Dark Palette */
+
+:root {
+  /* Dark Palette */
+  --base: #0F1C2D;          /* deep navy — primary bg */
+  --surface: #162336;       /* slightly lighter navy — cards */
+  --surface-2: #1D2E42;     /* hover state surfaces */
+  --ink: #E8F1F2;           /* crisp off-white — primary text */
+  --mist: rgba(232, 241, 242, 0.45);
+  --rule: rgba(232, 241, 242, 0.08);
+
+  /* Accents */
+  --slate: #5D727E;         /* muted teal-grey */
+  --cyan: #5D727E;          /* alias for components that use --cyan */
+  --cyan-bright: #7FC8D1;   /* brighter tint for highlights */
+  --blue: #3B6FD4;
+  --ember: #C87C4A;
+
+  /* Gradient Text */
+  --gradient-evidence: linear-gradient(135deg, #E8F1F2 0%, #7FC8D1 55%, #5D727E 100%);
+
+  /* Semantic */
+  --background: var(--base);
+  --foreground: var(--ink);
+  --border: var(--rule);
+  --accent: var(--slate);
+  --secondary: var(--surface);
+  --muted: var(--mist);
+
+  /* Radius */
+  --radius: 16px;
+
+  /* Typography Scale */
+  --text-hero-stat: clamp(60px, 11vw, 140px);
+  --text-hero-stat-lh: 0.9;
+  --text-eyebrow: 10px;
+  --text-hero-label: clamp(16px, 2vw, 22px);
+  --text-headline: clamp(28px, 4vw, 56px);
+  --text-body: clamp(14px, 1vw, 16px);
+  --text-data: 11px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+@theme inline {
+  /* Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Instrument Serif', serif;
+  --font-editorial: 'PP Editorial New', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Colors */
+  --color-base: var(--base);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-rule: var(--rule);
+  --color-slate: var(--slate);
+  --color-cyan: var(--cyan);
+  --color-cyan-bright: var(--cyan-bright);
+  --color-blue: var(--blue);
+  --color-ember: var(--ember);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+
+  /* Typography Scale */
+  --font-size-hero-stat: var(--text-hero-stat);
+  --font-size-hero-label: var(--text-hero-label);
+  --font-size-headline: var(--text-headline);
+  --font-size-body: var(--text-body);
+  --font-size-data: var(--text-data);
+  --font-size-eyebrow: var(--text-eyebrow);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Animation */
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--base);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  .gradient-text {
+    background: var(--gradient-evidence);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .scroll-smooth { scroll-behavior: smooth; }
+
+  /* Font weight utilities */
+  .font-500 { font-weight: 500; }
+  .font-600 { font-weight: 600; }
+  .font-700 { font-weight: 700; }
+
+  /* Typography utilities */
+  .text-hero-stat {
+    font-size: var(--text-hero-stat);
+    line-height: var(--text-hero-stat-lh);
+    letter-spacing: -0.06em;
+  }
+  .text-hero-label {
+    font-size: var(--text-hero-label);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  .text-headline {
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .text-body {
+    font-size: var(--text-body);
+    line-height: 1.68;
+  }
+  .text-eyebrow {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .text-data {
+    font-size: var(--text-data);
+    letter-spacing: 0.04em;
+  }
+
+  /* Font family utilities */
+  .font-sans { font-family: var(--font-sans); }
+  .font-serif { font-family: var(--font-serif); }
+  .font-editorial { font-family: var(--font-editorial); }
+  .font-mono { font-family: var(--font-mono); }
+
+  /* Color text utilities */
+  .text-ink { color: var(--ink); }
+  .text-mist { color: var(--mist); }
+  .text-slate { color: var(--slate); }
+  .text-cyan { color: var(--cyan-bright); }
+  .text-blue { color: var(--blue); }
+  .text-ember { color: var(--ember); }
+
+  /* Color bg utilities */
+  .bg-base { background-color: var(--base); }
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-2 { background-color: var(--surface-2); }
+  .bg-ink { background-color: var(--ink); }
+  .bg-slate { background-color: var(--slate); }
+
+  /* Border utilities */
+  .border-rule { border-color: var(--rule); }
+  .border-slate { border-color: var(--slate); }
+  .border-ink { border-color: var(--ink); }
+}
