@@ -4,7 +4,7 @@ export async function middleware(req: NextRequest) {
   try {
     const ip =
       req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
-      req.ip ??
+      req.headers.get('x-real-ip') ??
       'unknown'
 
     const path = req.nextUrl.pathname
