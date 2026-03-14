@@ -56,7 +56,7 @@ export function NavPill() {
       >
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
-          <img src="/logo.png" alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
+          <img src="/logo.jpg" alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: '#E8F1F2', letterSpacing: '-0.01em' }}>
             CLUT
           </span>

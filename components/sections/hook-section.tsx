@@ -91,7 +91,7 @@ export function HookSection() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <img 
                 ref={logoMarkRef}
-                src="/logo.png" 
+                src="/logo.jpg" 
                 alt="CLUT Media" 
                 style={{ width: 24, height: 24, objectFit: 'contain' }}
               />

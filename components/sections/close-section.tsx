@@ -58,7 +58,7 @@ export function CloseSection() {
         {/* Logo with Progressive Radial Blur Mask */}
         <div ref={logoRef} style={{ position: 'relative', width: 80, height: 80, marginBottom: -10 }}>
           <img 
-            src="/logo.png" 
+            src="/logo.jpg" 
             alt="CLUT Media"
             style={{ 
               width: '100%', 
@@ -118,7 +118,7 @@ export function CloseSection() {
       <footer style={{ marginTop: 100, paddingTop: 32, borderTop: '1px solid rgba(232,241,242,0.06)', width: '100%', maxWidth: 960 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="/logo.png" alt="" style={{ width: 16, height: 16, opacity: 0.6 }} />
+            <img src="/logo.jpg" alt="" style={{ width: 16, height: 16, opacity: 0.6 }} />
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500, color: 'rgba(232,241,242,0.8)' }}>clut.media</span>
           </div>
           <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
