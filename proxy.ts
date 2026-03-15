@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   try {
     const ip =
       req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
